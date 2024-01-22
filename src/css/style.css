@@ -1,0 +1,10 @@
+label {
+	display: inline-block;
+	width: 200px;
+}
+select {
+	min-width: 150px;
+}
+.field {
+	margin-bottom: 10px;
+}
