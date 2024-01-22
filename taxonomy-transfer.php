@@ -4,7 +4,7 @@
  * Plugin URI:
  * GitHub Plugin URI: https://github.com/andrasguseo/taxonomy-transfer
  * Description:       Transfer terms from one taxonomy to another within a selected post type.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Plugin Class:      AGU_Taxonomy_Transfer
  * Author:            Andras Guseo
  * Author URI:        https://andrasguseo.com
@@ -34,7 +34,7 @@ class AGU_Taxonomy_Transfer {
 		add_filter( 'plugin_action_links', [ $this, 'add_settings_plugin_action' ], 10, 2 );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 		add_action( 'wp_ajax_get_taxonomies_for_post_type', [ $this, 'get_taxonomies_for_post_type' ] );
-		add_action( 'admin_notices', [ $this, 'tt_admin_notices' ] );
+		add_action( 'admin_notices', [ $this, 'admin_notices' ] );
 	}
 
 	/**
@@ -49,7 +49,7 @@ class AGU_Taxonomy_Transfer {
 			'Taxonomy Transfer',
 			'manage_options',
 			'taxonomy-transfer',
-			callback: [ $this, 'taxonomy_transfer_page' ]
+			[ $this, 'taxonomy_transfer_page' ]
 		);
 	}
 
@@ -193,7 +193,7 @@ class AGU_Taxonomy_Transfer {
 			$posts = get_posts( $args );
 
 			foreach ( $posts as $post ) {
-				$terms  = wp_get_object_terms( $post->ID, $origin_taxonomy, args: [ 'fields' => 'names' ] );
+				$terms  = wp_get_object_terms( $post->ID, $origin_taxonomy, [ 'fields' => 'names' ] );
 				$action = wp_set_object_terms( $post->ID, $terms, $destination_taxonomy, true );
 				if ( is_array( $action ) ) {
 					$results[ 'success' ] ++;
@@ -320,7 +320,7 @@ class AGU_Taxonomy_Transfer {
 	 *
 	 * @return void
 	 */
-	public function tt_admin_notices(): void {
+	public function admin_notices(): void {
 		$msg     = [];
 		$results = [
 			'success' => 'Updated',
